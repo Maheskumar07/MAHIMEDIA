@@ -285,3 +285,21 @@ footer {
 .footer-links { margin-top: 15px; }
 .footer-links a { color: #64748b; text-decoration: none; margin: 0 12px; }
 .footer-links a:hover { color: #00f2fe; }
+
+/* લોગઆઉટ બટનની ડિઝાઇન */
+.logout-btn {
+    background-color: #dc3545; /* લાલ કલર */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 20px;
+    transition: background 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #bd2130; /* હોવર કરવાથી થોડો ડાર્ક કલર થશે */
+}

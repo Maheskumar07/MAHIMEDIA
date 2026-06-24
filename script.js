@@ -201,3 +201,9 @@ function logoutUser() {
         window.location.href = "login.html";
     });
 }
+
+function logoutUser() {
+    firebase.auth().signOut().then(() => {
+        window.location.href = "login.html"; // લોગઆઉટ થયા પછી યુઝર સીધો લોગીન પેજ પર પહોંચી જશે
+    });
+}
