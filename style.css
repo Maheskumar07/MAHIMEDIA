@@ -285,3 +285,57 @@ footer {
 .footer-links { margin-top: 15px; }
 .footer-links a { color: #64748b; text-decoration: none; margin: 0 12px; }
 .footer-links a:hover { color: #00f2fe; }
+
+/* --- Auth Section Styling --- */
+.auth-section {
+    padding: 80px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, rgba(0, 242, 254, 0.05), transparent 70%);
+}
+
+.auth-container {
+    background: rgba(30, 41, 59, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border-radius: 24px;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.6);
+    transition: all 0.4s ease;
+}
+
+.auth-container h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.auth-container p {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.auth-switch {
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+.auth-switch a {
+    color: #00f2fe;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-switch a:hover {
+    text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
+}
+
+/* ફોર્મ બદલવા માટે ક્લાસ */
+.hidden {
+    display: none !important;
+}
