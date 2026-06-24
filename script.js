@@ -77,7 +77,7 @@ function addNewBlog() {
 }
 
 function deleteBlog(index) {
-    if(confirm("બ્લોગ ડીલીટ કરવો છે?")) { blogs.splice(index, 1); localStorage.setItem('myBlogs', JSON.stringify(blogs)); displayBlogs(); }
+    if(confirm("Want to Delete the Blog?")) { blogs.splice(index, 1); localStorage.setItem('myBlogs', JSON.stringify(blogs)); displayBlogs(); }
 }
 
 // ==================== 3. PRODUCT MANAGEMENT ====================
