@@ -131,56 +131,70 @@ document.addEventListener("DOMContentLoaded", () => {
     displayProducts();
 });
 
-/* --- Auth Section Styling --- */
-.auth-section {
-    padding: 80px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(circle at center, rgba(0, 242, 254, 0.05), transparent 70%);
+// ==================== 5. AUTHENTICATION (LOG IN / SIGN UP) ====================
+
+// ૧. લૉગિન અને સાઇન-અપ ફોર્મ વચ્ચે અદલા-બદલી (Toggle) કરવાનું ફંક્શન
+function toggleAuthForm() {
+    const loginForm = document.getElementById('loginFormContainer');
+    const signupForm = document.getElementById('signupFormContainer');
+    
+    loginForm.classList.toggle('hidden');
+    signupForm.classList.toggle('hidden');
 }
 
-.auth-container {
-    background: rgba(30, 41, 59, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(15px);
-    border-radius: 24px;
-    padding: 40px;
-    width: 100%;
-    max-width: 450px;
-    text-align: center;
-    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.6);
-    transition: all 0.4s ease;
-}
+// ૨. સાઇન-અપ (નવું એકાઉન્ટ બનાવવા) માટેનું ફંક્શન
+function handleSignup() {
+    const name = document.getElementById('signupName').value;
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
 
-.auth-container h2 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 5px;
-}
-
-.auth-container p {
-    color: #64748b;
-    font-size: 0.95rem;
-}
-
-.auth-switch {
-    margin-top: 15px;
-    font-size: 0.9rem;
-}
-
-.auth-switch a {
-    color: #00f2fe;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.auth-switch a:hover {
-    text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
-}
-
-/* ફોર્મ બદલવા માટે ક્લાસ */
-.hidden {
-    display: none !important;
+    if (!email || !password) {
+        alert("કૃપા કરીને ઇમેઇલ અને પાસવર્ડ ભરો!");
+        return;
     }
+
+    // પહેલેથી આ ઇમેઇલ રજીસ્ટર છે કે નહીં તે ચેક કરો
+    let users = JSON.parse(localStorage.getItem('webUsers')) || [];
+    const userExists = users.some(user => user.email === email);
+
+    if (userExists) {
+        alert("આ ઇમેઇલ આઈડી પર પહેલેથી એકાઉન્ટ બનેલું છે!");
+        return;
+    }
+
+    // નવો યુઝર ઉમેરો
+    users.push({ name, email, password });
+    localStorage.setItem('webUsers', JSON.stringify(users));
+
+    alert("એકાઉન્ટ સક્સેસફુલી બની ગયું છે! હવે લૉગિન કરો.");
+    
+    // ફોર્મ ખાલી કરો અને લૉગિન સ્ક્રીન પર જાઓ
+    document.getElementById('signupName').value = '';
+    document.getElementById('signupEmail').value = '';
+    document.getElementById('signupPassword').value = '';
+    toggleAuthForm();
+}
+
+// ૩. લૉગિન ચેક કરવાનું ફંક્શન
+function handleLogin() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password) {
+        alert("ઇમેઇલ અને પાસવર્ડ લખો!");
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem('webUsers')) || [];
+    
+    // ઇમેઇલ અને પાસવર્ડ મેચ કરો
+    const matchedUser = users.find(user => user.email === email && user.password === password);
+
+    if (matchedUser) {
+        alert(`સ્વાગત છે, ${matchedUser.name || 'યુઝર'}! લૉગિન સફળ રહ્યું.`);
+        // અહીંથી તમે યુઝરને એડમિન પેનલ બતાવી શકો છો અથવા રીડાયરેક્ટ કરી શકો છો
+        sessionStorage.setItem('loggedInUser', JSON.stringify(matchedUser));
+    } else {
+        alert("ખોટો ઇમેઇલ અથવા પાસવર્ડ! કૃપા કરીને ફરી પ્રયાસ કરો.");
+    }
+}
