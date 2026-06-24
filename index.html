@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html lang="gu">
 <head>
-    <section id="auth-section" class="auth-section">
-    <div class="auth-container" id="loginFormContainer">
-        <h2>Log In</h2>
-        <p>તમારા એકાઉન્ટમાં લોગિન કરો</p>
-        <div class="admin-panel" style="margin: 20px 0; max-width: 100%;">
-            <input type="email" id="loginEmail" placeholder="ઇમેઇલ એડ્રેસ..." required>
-            <input type="password" id="loginPassword" placeholder="પાસવર્ડ..." required>
-            <button onclick="handleLogin()" class="publish-btn">Log In</button>
-        </div>
-        <p class="auth-switch">નવું એકાઉન્ટ બનાવવું છે? <a href="javascript:void(0)" onclick="toggleAuthForm()">Sign Up કરો</a></p>
-    </div>
-
-    <div class="auth-container hidden" id="signupFormContainer">
-        <h2>Sign Up</h2>
-        <p>નવું એકાઉન્ટ બનાવો</p>
-        <div class="admin-panel" style="margin: 20px 0; max-width: 100%;">
-            <input type="text" id="signupName" placeholder="તમારું નામ...">
-            <input type="email" id="signupEmail" placeholder="ઇમેઇલ એડ્રેસ..." required>
-            <input type="password" id="signupPassword" placeholder="નવો પાસવર્ડ..." required>
-            <button onclick="handleSignup()" class="publish-btn" style="background: linear-gradient(45deg, #9b59b6, #4facfe);">Create Account</button>
-        </div>
-        <p class="auth-switch">પહેલેથી એકાઉન્ટ છે? <a href="javascript:void(0)" onclick="toggleAuthForm()">Log In કરો</a></p>
-    </div>
-    </section>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Blog and Affiliate Website</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+    body { display: none; } 
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+<script>
+  // ⚠️ તમારો Firebase કોડ અહીં પણ પેસ્ટ કરો
+  const firebaseConfig = {
+    apiKey: "AIzaSyBpebYhcGHdgthrLN7IGkT4LIu4QL0zZJA",
+    authDomain: "mahimedia-f991c.firebaseapp.com",
+    projectId: "mahimedia-f991c",
+    storageBucket: "mahimedia-f991c.firebasestorage.app",
+    messagingSenderId: "543258433729",
+    appId: "1:543258433729:web:90981974940746207f1c40",
+    measurementId: "G-XGGQLZ1ZJ7"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  // લોગીન સ્ટેટસ ચેક કરવું
+  firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+      // જો યુઝર લોગીન નથી, તો તેને લોગીન પેજ પર ધકેલો
+      window.location.href = "login.html";
+    } else {
+      // જો લોગીન છે, તો જ વેબસાઇટ બતાવો
+      document.body.style.display = "block";
+    }
+  });
+</script>
 </head>
 <body>
 

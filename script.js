@@ -77,7 +77,7 @@ function addNewBlog() {
 }
 
 function deleteBlog(index) {
-    if(confirm("Want to Delete the Blog?")) { blogs.splice(index, 1); localStorage.setItem('myBlogs', JSON.stringify(blogs)); displayBlogs(); }
+    if(confirm("Want to Delete The Blog?")) { blogs.splice(index, 1); localStorage.setItem('myBlogs', JSON.stringify(blogs)); displayBlogs(); }
 }
 
 // ==================== 3. PRODUCT MANAGEMENT ====================
@@ -131,70 +131,73 @@ document.addEventListener("DOMContentLoaded", () => {
     displayProducts();
 });
 
-// ==================== 5. AUTHENTICATION (LOG IN / SIGN UP) ====================
+// ⚠️ અહીં તમારો પોતાનો Firebase કોડ પેસ્ટ કરો (જે Firebase વેબસાઇટ પરથી મળ્યો હોય)
+const firebaseConfig = {
+     apiKey: "AIzaSyBpebYhcGHdgthrLN7IGkT4LIu4QL0zZJA",
+    authDomain: "mahimedia-f991c.firebaseapp.com",
+    projectId: "mahimedia-f991c",
+    storageBucket: "mahimedia-f991c.firebasestorage.app",
+    messagingSenderId: "543258433729",
+    appId: "1:543258433729:web:90981974940746207f1c40",
+    measurementId: "G-XGGQLZ1ZJ7"
+};
+// Firebase ચાલુ કરવું
+firebase.initializeApp(firebaseConfig);
 
-// ૧. લૉગિન અને સાઇન-અપ ફોર્મ વચ્ચે અદલા-બદલી (Toggle) કરવાનું ફંક્શન
-function toggleAuthForm() {
-    const loginForm = document.getElementById('loginFormContainer');
-    const signupForm = document.getElementById('signupFormContainer');
-    
-    loginForm.classList.toggle('hidden');
-    signupForm.classList.toggle('hidden');
+// ૧. સાઇન-અપ કરવાનું ફંક્શન
+function signUpUser() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+        alert("Successfull Log In.");
+        window.location.href = "login.html";
+    })
+    .catch((error) => {
+        alert("Error: " + error.message);
+    });
 }
 
-// ૨. સાઇન-અપ (નવું એકાઉન્ટ બનાવવા) માટેનું ફંક્શન
-function handleSignup() {
-    const name = document.getElementById('signupName').value;
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
+// ૨. લોગીન કરવાનું ફંક્શન
+function loginUser() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-    if (!email || !password) {
-        alert("કૃપા કરીને ઇમેઇલ અને પાસવર્ડ ભરો!");
-        return;
-    }
-
-    // પહેલેથી આ ઇમેઇલ રજીસ્ટર છે કે નહીં તે ચેક કરો
-    let users = JSON.parse(localStorage.getItem('webUsers')) || [];
-    const userExists = users.some(user => user.email === email);
-
-    if (userExists) {
-        alert("આ ઇમેઇલ આઈડી પર પહેલેથી એકાઉન્ટ બનેલું છે!");
-        return;
-    }
-
-    // નવો યુઝર ઉમેરો
-    users.push({ name, email, password });
-    localStorage.setItem('webUsers', JSON.stringify(users));
-
-    alert("એકાઉન્ટ સક્સેસફુલી બની ગયું છે! હવે લૉગિન કરો.");
-    
-    // ફોર્મ ખાલી કરો અને લૉગિન સ્ક્રીન પર જાઓ
-    document.getElementById('signupName').value = '';
-    document.getElementById('signupEmail').value = '';
-    document.getElementById('signupPassword').value = '';
-    toggleAuthForm();
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+        window.location.href = "index.html"; // લોગીન થાય એટલે હોમ પેજ પર મોકલો
+    })
+    .catch((error) => {
+        alert("Error: " + error.message);
+    });
 }
 
-// ૩. લૉગિન ચેક કરવાનું ફંક્શન
-function handleLogin() {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
+// ૩. વેબસાઇટ લોક રાખવા માટેનું સિક્યોરિટી ફંક્શન
+// (આ ચેક કરશે કે કયું પેજ ખુલ્લું છે અને યુઝર લોગીન છે કે નહીં)
+firebase.auth().onAuthStateChanged((user) => {
+    const currentPage = window.location.pathname.split("/").pop();
 
-    if (!email || !password) {
-        alert("ઇમેઇલ અને પાસવર્ડ લખો!");
-        return;
-    }
-
-    let users = JSON.parse(localStorage.getItem('webUsers')) || [];
-    
-    // ઇમેઇલ અને પાસવર્ડ મેચ કરો
-    const matchedUser = users.find(user => user.email === email && user.password === password);
-
-    if (matchedUser) {
-        alert(`સ્વાગત છે, ${matchedUser.name || 'યુઝર'}! લૉગિન સફળ રહ્યું.`);
-        // અહીંથી તમે યુઝરને એડમિન પેનલ બતાવી શકો છો અથવા રીડાયરેક્ટ કરી શકો છો
-        sessionStorage.setItem('loggedInUser', JSON.stringify(matchedUser));
+    if (!user) {
+        // જો યુઝર લોગીન નથી અને તે ઇન્ડેક્સ પેજ ખોલવાનો પ્રયત્ન કરે છે
+        if (currentPage === "index.html" || currentPage === "") {
+            window.location.href = "login.html";
+        }
     } else {
-        alert("ખોટો ઇમેઇલ અથવા પાસવર્ડ! કૃપા કરીને ફરી પ્રયાસ કરો.");
+        // જો યુઝર ઓલરેડી લોગીન છે, તો તેને index.html બતાવો
+        if (currentPage === "index.html" || currentPage === "") {
+            document.body.style.display = "block";
+        }
+        // જો લોગીન હોય છતાં ભૂલથી લોગીન/સાઇનઅપ પેજ ખોલે, તો સીધો હોમ પેજ પર મોકલો
+        if (currentPage === "login.html" || currentPage === "signup.html") {
+            window.location.href = "index.html";
+        }
     }
+});
+
+// ૪. લોગઆઉટ કરવાનું ફંક્શન
+function logoutUser() {
+    firebase.auth().signOut().then(() => {
+        window.location.href = "login.html";
+    });
 }
