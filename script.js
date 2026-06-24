@@ -201,3 +201,26 @@ function logoutUser() {
         window.location.href = "login.html";
     });
 }
+
+// ⏱️ ઓટોમેટિક લોગઆઉટ સેટઅપ (Automatic Log Out)
+
+let logoutTimer;
+const TIMEOUT_LIMIT = 5 * 60 * 1000; // ૫ મિનિટ (મિલીસેકન્ડમાં: મિનિટ * 60 * 1000)
+
+// ટાઈમર રીસેટ કરવાનું ફંક્શન (જ્યારે યુઝર માઉસ હલાવે કે કીબોર્ડ વાપરે)
+function resetLogoutTimer() {
+    clearTimeout(logoutTimer);
+    
+    // જો યુઝર લોગીન હોય, તો જ ટાઈમર ચાલુ કરવું
+    if (firebase.auth().currentUser) {
+        logoutTimer = setTimeout(logoutUser, TIMEOUT_LIMIT);
+    }
+}
+
+// યુઝર વેબસાઇટ પર કંઈ પણ એક્ટિવિટી કરે ત્યારે ટાઈમર રીસેટ થાય
+window.onload = resetLogoutTimer;
+window.onmousemove = resetLogoutTimer; // માઉસ હલાવે ત્યારે
+window.onmousedown = resetLogoutTimer; // ક્લિક કરે ત્યારે
+window.ontouchstart = resetLogoutTimer; // મોબાઇલમાં ટચ કરે ત્યારે
+window.onclick = resetLogoutTimer;      // ક્લિક કરે ત્યારે
+window.onkeypress = resetLogoutTimer;   // કીબોર્ડ વાપરે ત્યારે
