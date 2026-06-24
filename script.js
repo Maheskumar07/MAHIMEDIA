@@ -218,13 +218,6 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-// ૪. લોગઆઉટ કરવાનું ફંક્શન
-function logoutUser() {
-    firebase.auth().signOut().then(() => {
-        window.location.href = "signup.html";
-    });
-}
-
 // ⏱️ ઓટોમેટિક લોગઆઉટ સેટઅપ (Automatic Log Out)
 
 let logoutTimer;
