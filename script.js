@@ -143,6 +143,29 @@ const firebaseConfig = {
 };
 // Firebase ચાલુ કરવું
 firebase.initializeApp(firebaseConfig);
+// ૧. તમારો Firebase કોડ (જેમ છે તેમ જ રહેવા દો)
+const firebaseConfig = {
+    piKey: "AIzaSyBpebYhcGHdgthrLN7IGkT4LIu4QL0zZJA",
+    authDomain: "mahimedia-f991c.firebaseapp.com",
+    projectId: "mahimedia-f991c",
+    storageBucket: "mahimedia-f991c.firebasestorage.app",
+    messagingSenderId: "543258433729",
+    appId: "1:543258433729:web:90981974940746207f1c40",
+    measurementId: "G-XGGQLZ1ZJ7"
+};
+
+// Firebase ચાલુ કરવું
+firebase.initializeApp(firebaseConfig);
+
+// 🛠️ ફાઇરબેઝમાં આ નવો ફેરફાર ઉમેરો (SESSION Persistence)
+// આનાથી જ્યારે પણ યુઝર ટેબ અથવા બ્રાઉઝર બંધ કરશે, એટલે આપોઆપ લોગઆઉટ થઈ જશે!
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+  .then(() => {
+      console.log("Firebase સેશન સુરક્ષિત રીતે સેટ થઈ ગયું છે.");
+  })
+  .catch((error) => {
+      console.error("Persistence સેટ કરવામાં ભૂલ: ", error.message);
+  });
 
 // ૧. સાઇન-અપ કરવાનું ફંક્શન
 function signUpUser() {
@@ -198,7 +221,7 @@ firebase.auth().onAuthStateChanged((user) => {
 // ૪. લોગઆઉટ કરવાનું ફંક્શન
 function logoutUser() {
     firebase.auth().signOut().then(() => {
-        window.location.href = "login.html";
+        window.location.href = "signup.html";
     });
 }
 
